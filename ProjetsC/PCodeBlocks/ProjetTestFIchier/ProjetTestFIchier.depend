@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1542192783 source:/home/ajc184/Projets/ProjetsC/PCodeBlocks/ProjetTestFIchier/main.c
+	<stdio.h>
+	<stdlib.h>
+

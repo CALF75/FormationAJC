@@ -1,0 +1,2 @@
+Je fais un programme en c.
+Je regarde comment il marche.
