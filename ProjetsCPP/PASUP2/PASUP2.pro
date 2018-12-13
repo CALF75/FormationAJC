@@ -1,15 +1,14 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-11-22T12:43:34
+# Project created by QtCreator 2018-11-29T12:31:51
 #
 #-------------------------------------------------
 
 QT       += core gui
 
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ExQFileDialog
+TARGET = PASUP2
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -23,31 +22,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
-    apropos.cpp \
-    policedialog.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    apropos.h \
-    policedialog.h
+        mainwindow.h
 
 FORMS += \
-        mainwindow.ui \
-    apropos.ui \
-    policedialog.ui
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
-RESOURCES += \
-    maressource.qrc
-
-DISTFILES += \
-    ../../../Images/Capture d’écran du 2018-11-23 09-51-52.png
+        mainwindow.ui
