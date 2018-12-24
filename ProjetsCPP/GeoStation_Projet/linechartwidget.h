@@ -10,9 +10,10 @@
 #include <QDateTime>
 #include <QStringList>
 #include <QtGlobal>
-#include <QFont>
 
-
+namespace Ui {
+class LineChartWidget;
+}
 
 class LineChartWidget : public QWidget
 {
@@ -28,6 +29,7 @@ public:
 
 
 private:
+    Ui::LineChartWidget *ui;
     int hauteurwidget;
     int largeurwidget;
     int hauteurgraphique;
@@ -36,26 +38,19 @@ private:
     QColor couleurAxes;
     QColor couleurCourbe;
     QColor couleurRemplissage;
-    QColor couleurTexte;
     QPoint TransformationCoordonnees(QPoint point);
     QMap<QString, QString> map_donnees;
     QStringList listeAbscisses;
     QStringList listeOrdonnees;
     QString formatdatetime;
-    QString formatdateaxe;
-    QString formatdateaxeavecannees;
     QDateTime datedebut;
     QDateTime datefin;
     qint64 Deltatemps;
     int nb_row;
-    QFont fonte;
-    int taillefonte;
 
 
 protected : void paintEvent(QPaintEvent *event) override;
-    void resizeEvent( QResizeEvent *p)
-    { //qDebug()<<this->size();
-    }
+
 };
 
 #endif // LINECHARTWIDGET_H
