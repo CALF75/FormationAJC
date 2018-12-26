@@ -20,15 +20,21 @@ class MainWindow : public QWidget
 		MainWindow(MainWindow const& other);
 		MainWindow&			operator=(MainWindow const& other);
 
-		void				initMozaic();
+		void				initTimer();
 		void				initWidgets();
+		void				initLayout();
+		void				initScreen();
 
 	public:
 		explicit MainWindow(QWidget *parent = 0);
 		~MainWindow();
 		bool				init();
+		bool				show();
 		bool				run();
 		bool				end();
+
+	public slots:
+		void				changeWidget();
 };
 
 #endif // MAINWINDOW_H_

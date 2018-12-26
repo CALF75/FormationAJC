@@ -1,7 +1,7 @@
 #include "vigicruesapi.h"
 
 
-VigicruesApi::VigicruesApi(ordonnanceur *ord_,QObject *parent): AbstractApi(IdWidget(Vigicrues), ord_, parent)
+VigicruesApi::VigicruesApi(ordonnanceur *ord_,QObject *parent): AbstractApi(ord_,parent)
 {
 
   // initialisation param
@@ -16,15 +16,14 @@ VigicruesApi::VigicruesApi(ordonnanceur *ord_,QObject *parent): AbstractApi(IdWi
   elementsRequete[3] = "&geofilter.distance=";
   elementsRequete[4] = "&refine.station_id=";
   boolUnSeulAppelALafois = true;
-
+  boolAlternance = true;
 
   //manager
   manager = new QNetworkAccessManager (parent);
-  connect(m_reply,SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(slotError(QNetworkReply::NetworkError)));
-  connect(m_reply,SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
-  connect(m_reply2,SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(slotError(QNetworkReply::NetworkError)));
-  connect(m_reply2,SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
   connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(reponseRecue(QNetworkReply *)));
+
+
+
 
   definitionAppelRequete();
 
@@ -47,11 +46,11 @@ void VigicruesApi::traitementRequeteInitialisation(QNetworkReply *rep)
     double nhits = jsonobj.value(QString("nhits")).toDouble();
     if(nhits > Nb_rows.toDouble())
     {
-        qDebug()<<"Le nombre de hits est :"<<nhits<<" Il y a un risque d'erreur sur la station.";
+   //     qDebug()<<"Le nombre de hits est :"<<nhits<<" Il y a un risque d'erreur sur la station.";
     }
             else
     {
-        qDebug()<<"Le nombre de hits est :"<<nhits;
+      //  qDebug()<<"Le nombre de hits est :"<<nhits;
     }
 
     if(nhits>1){
@@ -99,11 +98,11 @@ void VigicruesApi::traitementRequeteEnregistrements(QNetworkReply *rep)
     double nhits = jsonobj.value(QString("nhits")).toDouble();
     if(nhits > Nb_rows.toDouble())
     {
-        qDebug()<<"Le nombre de hits est :"<<nhits<<" Des enregistrements sont perdus.";
+       // qDebug()<<"Le nombre de hits est :"<<nhits<<" Des enregistrements sont perdus.";
     }
             else
     {
-        qDebug()<<"Le nombre de hits est :"<<nhits;
+      //  qDebug()<<"Le nombre de hits est :"<<nhits;
     }
 
     if(nhits>1){
@@ -111,6 +110,14 @@ void VigicruesApi::traitementRequeteEnregistrements(QNetworkReply *rep)
 
      for(int i=0;i<MonJSonArray.size();i++)
       {
+
+         if(i==0){
+             map_formulaire.insert("lbstationhydro", MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("lbstationhydro")).toString() );
+             map_formulaire.insert("dist", QString::number(distance_station));
+             map_formulaire.insert("cdcommune", MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("cdcommune")).toString() );
+             map_formulaire.insert("période", QString("hebdomadaire") );
+         }
+         /*
         qDebug()<<MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("dist")).toString();
         qDebug()<<MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("lbstationhydro")).toString();
         qDebug()<<MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("cdcommune")).toString();
@@ -121,9 +128,10 @@ void VigicruesApi::traitementRequeteEnregistrements(QNetworkReply *rep)
         qDebug()<<MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("coordonneeswgs84")).toArray()[1].toDouble();
         qDebug()<<MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("hauteur")).toDouble();
         qDebug()<<MonJSonArray[i].toObject().value(QString("geometry")).toObject().value(QString("type")).toString();
+        */
         map_formulaire.insert(MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("timestamp")).toString(), QString::number(MonJSonArray[i].toObject().value(QString("fields")).toObject().value(QString("hauteur")).toDouble()) );
      }
-    emit send_info(map_formulaire);
+    emit vigicrues_send_info(map_formulaire);
     finish(0);
     }
     else{
@@ -146,17 +154,34 @@ void VigicruesApi::definitionAppelRequete()
         temps_init = temps_init.addDays(-1);
         // temps_init.toString(QString("yyyy-MM-ddTHH%3Amm%3A00%2B00%3A00"))
         QString req(elementsRequete[0]+elementsRequete[1]+temps_init.toString(QString("yyyy-MM-ddTHH%3'A'mm%3'A'00%2B00%3'A'00"))+elementsRequete[2]+elementsRequete[3]+QString::number(latitude)+"%2C+"+QString::number(longitude)+"%2C+"+QString::number(radius));
-        qDebug()<<req;
+        //qDebug()<<req;
         m_request.setUrl(QUrl(req));
         m_reply = manager->get(m_request);
+        connect(m_reply,SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(slotError(QNetworkReply::NetworkError)));
+        connect(m_reply,SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
         dateTimeDerniereMAJ= temps_init.addYears(-10);
       }
     else{
         QString req(elementsRequete[0]+elementsRequete[1]+dateTimeDerniereMAJ.toString(QString("yyyy-MM-ddTHH%3'A'mm%3'A'00%2B00%3'A'00"))+elementsRequete[2]+elementsRequete[4]+station_id);
-        qDebug()<<req;
+        //qDebug()<<req;
         m_request2.setUrl(QUrl(req));
-        dateTimeDerniereMAJ=QDateTime::currentDateTime();
+
+        //dateTimeDerniereMAJ=QDateTime::currentDateTime();
+        if(boolAlternance){
+            dateTimeDerniereMAJ=QDateTime::currentDateTime();
+            dateTimeDerniereMAJ=dateTimeDerniereMAJ.addDays(-7);
+            boolAlternance=false;
+        }else{
+            dateTimeDerniereMAJ=QDateTime::currentDateTime();
+            dateTimeDerniereMAJ=dateTimeDerniereMAJ.addDays(-1);
+            boolAlternance=true;
+        }
+
+
         m_reply2 = manager->get(m_request2);
+        connect(m_reply2,SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(slotError(QNetworkReply::NetworkError)));
+        connect(m_reply2,SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
+
     }}
     else{
         qDebug()<<"ERROR : Une requête est déjà en cours de traitement. Celle-ci ne sera pas traitée.";

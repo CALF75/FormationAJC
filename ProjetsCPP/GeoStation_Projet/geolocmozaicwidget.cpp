@@ -8,7 +8,7 @@ GeoLocMozaicWidget::GeoLocMozaicWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->setFixedSize(400, 500);
+    this->setFixedSize(300, 477);
 }
 
 GeoLocMozaicWidget::~GeoLocMozaicWidget()
@@ -23,12 +23,13 @@ void GeoLocMozaicWidget::receive_info(QMap<QString, QString>)
 
 void GeoLocMozaicWidget::receive_info2(QMap<QString, QVariant> map_ameliore)
 {
-    if (ui->label_3->text().size() == 0)
+    if (ui->label_5->text().size() == 0)
     {
         QFont font;
 
-        font.setPointSize(25);
+        font.setPointSize(12);
         font.setBold(true);
+
         ui->label_3->setFont(font);
         ui->label_4->setFont(font);
         ui->label_5->setFont(font);
@@ -40,7 +41,12 @@ void GeoLocMozaicWidget::receive_info2(QMap<QString, QVariant> map_ameliore)
     }
     else if (pix.isNull())
     {
-        pix.loadFromData(map_ameliore["Tableau"].toList().at(0).toMap()["map"].toByteArray());
-        ui->label_2->setPixmap(pix.scaled(ui->label->parentWidget()->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        if (!map_ameliore["Tableau"].toList().at(0).toMap()["map"].toByteArray().isNull())
+        {
+            pix.loadFromData(map_ameliore["Tableau"].toList().at(0).toMap()["map"].toByteArray());
+            ui->label_2->setPixmap(pix.scaled(ui->label->parentWidget()->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }
     }
+
+
 }

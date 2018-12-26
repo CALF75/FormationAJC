@@ -7,6 +7,9 @@ Timer::Timer(int Id_,ordonnanceur *ord_) :
 {
 }
 
+Timer::~Timer()
+{}
+
 void Timer::send_request()
 {
     switch(Id){
@@ -20,7 +23,7 @@ void Timer::send_request()
         break;
     case IdWidget(Satellite):
         ord->api_index = new SatelliteApi(ord);
-        this->start(180000);
+        this->start(300000);
         break;
     case IdWidget(Evenement):
         ord->api_index = new EvenementApi(ord);
@@ -28,7 +31,7 @@ void Timer::send_request()
         break;
     case IdWidget(Pollution):
         ord->api_index = new PollutionApi(ord);
-        this->start(10000);
+        this->start(7200000);
         break;
     case IdWidget(BorneElectrique):
         ord->api_index = new BorneElectriqueApi(ord);
@@ -44,7 +47,7 @@ void Timer::send_request()
         break;
     case IdWidget(Vigicrues):
         ord->api_index = new VigicruesApi(ord);
-        this->start(10000);
+        this->start(600000);
         break;
     case IdWidget(Geolocalisation):
         ord->api_index = new GeolocalisationApi(ord);
@@ -52,7 +55,7 @@ void Timer::send_request()
         break;
     case IdWidget(Avions):
         ord->api_index = new avionsapi(ord);
-        this->start(10000);
+        this->start(600000);
         break;
     }
     ord->api_index->loop->exec();

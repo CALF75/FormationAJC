@@ -19,32 +19,24 @@ SatelliteMozaicWidget::SatelliteMozaicWidget(QWidget *parent) :
     ui->Image->setPixmap(*BackgroungPicture);
     ui->Image->setGeometry(MyRect);
     ui->Image->setScaledContents(true);
+    QTimer::singleShot(10,[=]{ui->Image->setStyleSheet("border-radius: 10px;border: 2 plain");});
 
-
-    QPalette* pal=new QPalette();
-    pal->setBrush(QPalette::Window,brush);
-    pal->setColor(ui->Satellite_Info->backgroundRole(), Qt::yellow);
-//    ui->label->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->label_2->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->Name->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->label_3->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->label_4->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->label_5->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->label_6->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->Altitude->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->Longitude->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->Latitude->setAttribute(Qt::WA_TranslucentBackground);
-//    ui->DateLancement->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->label->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->label_2->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->Name->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->label_3->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->label_4->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->label_5->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->label_6->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->Altitude->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->Longitude->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->Latitude->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->DateLancement->setAttribute(Qt::WA_TranslucentBackground);
     ui->Titre->setAttribute(Qt::WA_TranslucentBackground);
 
     ui->Satellite_Info->setAutoFillBackground(true);
-    ui->Satellite_Info->setPalette(*pal);
-
-
-
 
     connect(timing,SIGNAL(timeout()),this,SLOT(Repeat()));
-
 
 
 }
@@ -62,7 +54,7 @@ SatelliteMozaicWidget::~SatelliteMozaicWidget()
 
 void SatelliteMozaicWidget::receive_info2(QMap<QString, QVariant> map_ameliore)
 {
-    data_map=map_ameliore;
+    data_map = map_ameliore;
     map_size = 0;
     map_size = map_ameliore["Parametre"].toMap()["Nb entree"].toInt();
 
@@ -80,14 +72,14 @@ void SatelliteMozaicWidget::Repeat()
 {
     TimerFunction(data_map);
     if(map_size>1){
-    if(NextSat < map_size-1)
-    {
-        NextSat++;
-    }
-    else
-    {
-       NextSat=0;
-    }
+        if(NextSat < map_size-1)
+        {
+            NextSat++;
+        }
+        else
+        {
+            NextSat=0;
+        }
     }
 
 
@@ -100,12 +92,8 @@ void SatelliteMozaicWidget::TimerFunction(QMap<QString, QVariant> map)
     QStringList Cat_List;
     Cat_List << "Amateur radio"<<"Beidou Navigation System"<<"Brightest"<<"Celestis"<<"CubeSats"<<"Disaster monitoring"<<
                 "Earth resources"<<"Education"<<"Engineering"<<"Experimental"<<"Flock"<<"Galileo"<<"Geodetic"<<"Geostationary"<<
-                "Global Positioning System (GPS) Constellation"<<"Global Positioning System (GPS) Operational"<<"Globalstar"<<
-                "Glonass Operational"<<"GOES"<<"Gonets"<<"Gorizont"<<"Intelsat"<<"Iridium"<<"IRNSS"<<"ISS"<<"Lemur"<<"Military"<<
-                "Molniya"<<"Navy Navigation Satellite System"<<"NOAA"<<"O3B Networks"<<"Orbcomm"<<"Parus"<<"QZSS"<<"Radar Calibration"<<
-                "Raduga"<<"Russian LEO Navigation"<<"Satellite Based Augmentation System"<<"Search_and_rescue"<<"Space and Earth Science"<<
-                "Strela"<<"Tracking and Data Relay Satellite System"<<"Tselina"<<"Tsikada"<<"Tsiklon"<<"TV"<<"Weather"<<"Westford Needles"<<
-                "XM and Sirius"<<"Yaogan";
+                "Glonass Operational"<<"GOES"<<"Military"<<"Molniya"<<"Navy Navigation Satellite System"<<"NOAA"<<"O3B Networks"<<
+                "Search_and_rescue"<<"Space and Earth Science"<<"Strela"<<"Westford Needles";
 
 
     cat = map["Tableau"].toList().at(NextSat).toMap()["Category"].toString();
@@ -116,7 +104,7 @@ void SatelliteMozaicWidget::TimerFunction(QMap<QString, QVariant> map)
     ui->Titre->setText(map["Parametre"].toMap()["Titre"].toString());
     ui->ID->setText(map["Tableau"].toList().at(NextSat).toMap()["ID"].toString());
     ui->DateLancement->setText(map["Tableau"].toList().at(NextSat).toMap()["Date de lancement"].toString());
-    ui->Altitude->setText(map["Tableau"].toList().at(NextSat).toMap()["Altitude"].toString());
+    ui->Altitude->setText(map["Tableau"].toList().at(NextSat).toMap()["Altitude"].toString()+" KM");
     ui->Latitude->setText(map["Tableau"].toList().at(NextSat).toMap()["Latitude"].toString());
     ui->Longitude->setText(map["Tableau"].toList().at(NextSat).toMap()["Longitude"].toString());
 
@@ -131,21 +119,13 @@ void SatelliteMozaicWidget::TimerFunction(QMap<QString, QVariant> map)
             ui->Image->setScaledContents(true);
             ui->Image->update();
 
-
-
-
         }
         else
         {
 
+
         }
 
     }
-
-}
-
-void SatelliteMozaicWidget::paintEvent(QPaintEvent *event)
-{
-
 
 }

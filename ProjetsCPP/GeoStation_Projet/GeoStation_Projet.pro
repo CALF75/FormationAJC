@@ -55,7 +55,6 @@ SOURCES += \
     museeswidget.cpp \
     evenementmozaicwidget.cpp \
     evenementwidget.cpp \
-    tableaupanoramicwidget.cpp \
     evenementmainwidget.cpp \
     satellitewidget.cpp \
     linechartwidget.cpp \
@@ -72,9 +71,12 @@ SOURCES += \
     satellitemozaicwidget.cpp \
     satellitemainwidget.cpp \
     sncfmainwidget.cpp \
+    customlabels.cpp \
     meteowidget.cpp \
     meteomozaicwidget.cpp \
-    meteomainwidget.cpp
+    meteomainwidget.cpp \
+    widgetstylesheet.cpp
+
 
 
 
@@ -111,7 +113,6 @@ HEADERS += \
     museeswidget.h \
     evenementmozaicwidget.h \
     evenementwidget.h \
-    tableaupanoramicwidget.h \
     evenementmainwidget.h \
     satellitewidget.h \
     linechartwidget.h \
@@ -128,9 +129,12 @@ HEADERS += \
     satellitemozaicwidget.h \
     satellitemainwidget.h \
     sncfmainwidget.h \
+    customlabels.h \
     meteowidget.h \
     meteomozaicwidget.h \
-    meteomainwidget.h
+    meteomainwidget.h \
+    widgetstylesheet.h
+
 
 
 
@@ -142,7 +146,6 @@ FORMS += \
     museesmozaicwidget.ui \
     museesmainwidget.ui \
     evenementmozaicwidget.ui \
-    tableaupanoramicwidget.ui \
     evenementmainwidget.ui \
     linechartwidget.ui \
     vigicruesmosaicwidget.ui \
