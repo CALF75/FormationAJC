@@ -29,21 +29,22 @@ class AWidget : public QWidget
 
 	public:
 
-		explicit AWidget(QWidget* parent = 0);
+		explicit AWidget(QWidget* parent = Q_NULLPTR);
 		virtual ~AWidget();
 
 		virtual int					getId() const;
 		virtual QLayout*		getMainLayout() const;
 		virtual QLayout*		getMozaicLayout() const;
-        virtual bool				contentMap() const = 0;
-        virtual bool				hasMozaicLayout() const = 0;
-				virtual bool				refresh() = 0;
-        virtual bool				init() = 0;
-        virtual bool				run() = 0;
-        virtual bool				end() = 0;
-        virtual void				addWidget(QWidget* widget);
+		virtual bool				contentMap() const = 0;
+		virtual bool				hasMainLayout() const = 0;
+		virtual bool				hasMozaicLayout() const = 0;
+		virtual bool				refresh() = 0;
+		virtual bool				init() = 0;
+		virtual bool				run() = 0;
+		virtual bool				end() = 0;
+		virtual void				addWidget(QWidget* widget);
 
-signals:
+	signals:
     void send_info(QMap<QString,QString>);
     void send_info2(QMap<QString,QVariant>);
     void sncf_send_info(QMap<QString, QVariant>);

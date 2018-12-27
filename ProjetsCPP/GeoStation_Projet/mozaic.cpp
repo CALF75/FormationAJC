@@ -41,10 +41,15 @@ bool	Mozaic::refresh()
 bool				Mozaic::init()
 {
 	setWindowState(Qt::WindowFullScreen);
-	setLayout(hLayout_);
 	hLayout_->addLayout(vLayout1_);
 	hLayout_->addLayout(vLayout2_);
+	setLayout(hLayout_);
 
+	/*
+	hLayout_->setContentsMargins(-1, -1, -1, -1);
+	vLayout1_->setContentsMargins(-1, -1, -1, -1);
+	vLayout2_->setContentsMargins(-1, -1, -1, -1);
+*/
 	return (true);
 }
 
@@ -63,6 +68,9 @@ bool				Mozaic::run()
 
 bool				Mozaic::end()
 {
+    delete (vLayout2_);
+    delete (vLayout1_);
+    delete (hLayout_);
 	return (true);
 }
 

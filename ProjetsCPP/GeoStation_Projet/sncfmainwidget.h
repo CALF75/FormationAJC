@@ -2,6 +2,7 @@
 #define SNCFMAINWIDGET_H
 
 #include <QWidget>
+#include "pokemap.h"
 
 namespace Ui {
 class SncfMainWidget;
@@ -17,6 +18,10 @@ public:
 
 private:
     Ui::SncfMainWidget *ui;
+    PokeMap *map;
+
+public slots:
+    void receive_info2(QMap<QString,QVariant> map_ameliore);
 };
 
 #endif // SNCFMAINWIDGET_H
